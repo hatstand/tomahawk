@@ -154,7 +154,7 @@ IF( APPLE )
     SET( tomahawkSources ${tomahawkSources} mac/tomahawkapp_mac.mm  mac/macshortcuthandler.cpp )
 
     IF(HAVE_SPARKLE)
-    SET( tomahawkHeaders ${tomahawkHeaders} ${SPARKLE}/Headers )
+        SET( tomahawkHeaders ${tomahawkHeaders} ${SPARKLE}/Headers )
     ENDIF(HAVE_SPARKLE)
 
 ENDIF( APPLE )

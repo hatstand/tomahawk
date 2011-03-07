@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>Clementine</title>
+        <link>http://www.clementine-player.org/</link>
+        <description>Clementine Player</description>
+        <language>en</language>
+        
+        
+        <item>
+            <title>Clementine 0.6</title>
+            <sparkle:releaseNotesLink>
+                http://clementine-player.googlecode.com/svn-history/r2528/tags/0.6/Changelog
+            </sparkle:releaseNotesLink>
+            <enclosure url="http://clementine-player.googlecode.com/files/ClementineSetup-0.6.exe"
+                sparkle:version="0.6" />
+            </item>
+            
+        </channel>
+    </rss>
+    <?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+            <channel>
+                <title>Tomahawk Player</title>
+                <link>http://www.gettomahawk.com</link>
+                <description>Tomahawk Player</description>
+                <language>en</language>
+                <item>
+                    <title>Version 0.0.1 (Tomahawk Player - It Lives!)</title>
+                    <sparkle:releaseNotesLink>
+                        https://github.com/tomahawk-player/tomahawk/blob/master/ChangeLog
+                    </sparkle:releaseNotesLink>
+                        <pubDate>Fri, 04 Mar 2011 16:05:15 -0500</pubDate>
+                        <enclosure url="http://download.tomahawk-player.org/sparklewin/updates/tomahawk0.1.exe" sparkle:version="0.0.1" />
+                    </item>
+                </channel>
+            </rss>
+            
