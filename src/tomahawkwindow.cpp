@@ -132,8 +132,8 @@ TomahawkWindow::TomahawkWindow( QWidget* parent )
       QAction* checkForUpdates = ui->menu_Help->addAction( tr( "Check for updates...") );
       checkForUpdates->setMenuRole( QAction::ApplicationSpecificRole );
       connect(checkForUpdates, SIGNAL( triggered( bool ) ), SLOT( checkForUpdates() ) );
-#elseif defined( Q_OS_WIN32 )
-      qtsparkle::Updater* updater = new qtsparkle::Updater( QUrl( "http://download.tomahawk-player.org/sparkle-win" ), this );
+#elseif defined( WIN32 )
+      qtsparkle::Updater* updater = new qtsparkle::Updater( QUrl( "http://download.tomahawk-player.org/sparklewin" ), this );
       updater->SetNetworkAccessManager( TomahawkUtils::nam() );
       updater->SetVersion( VERSION );
       connect( check_updates, SIGNAL( triggered() ), updater, SLOT( CheckNow() ) );
