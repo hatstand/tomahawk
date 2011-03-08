@@ -398,6 +398,8 @@ target_link_libraries( tomahawklib
     ${LIBECHONEST_LIBRARY}
     ${QT_LIBRARIES}
     ${OS_SPECIFIC_LINK_LIBRARIES}
+
+    pthread
 )
 
 install( TARGETS tomahawklib DESTINATION lib )

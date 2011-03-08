@@ -13,6 +13,8 @@ JabberPlugin::JabberPlugin()
 {
     if( !accountName().isEmpty() )
         m_menu = new QMenu(QString("Jabber (").append(accountName()).append(")"));
+    else
+        m_menu = new QMenu(QString("Jabber"));
 
     m_addFriendAction = m_menu->addAction("Add Friend...");
 

@@ -290,7 +290,7 @@ Tomahawk::EchonestControl::updateWidgets()
         QComboBox* combo = new QComboBox;
         combo->addItem( tr( "Tempo" ), QString::number( Echonest::DynamicPlaylist::SortTempoAscending ) );
         combo->addItem( tr( "Duration" ), QString::number( Echonest::DynamicPlaylist::SortDurationAscending ) );
-        combo->addItem( tr( "Loudness" ), QString::number( Echonest::DynamicPlaylist::SortLoudnessAscending ) );
+        //combo->addItem( tr( "Loudness" ), QString::number( Echonest::DynamicPlaylist::SortLoudnessAscending ) );
         combo->addItem( tr( "Artist Familiarity" ), QString::number( Echonest::DynamicPlaylist::SortArtistFamiliarityAscending ) );
         combo->addItem( tr( "Artist Hotttnesss" ), QString::number( Echonest::DynamicPlaylist::SortArtistHotttnessAscending ) );
         combo->addItem( tr( "Song Hotttnesss" ), QString::number( Echonest::DynamicPlaylist::SortSongHotttnesssAscending ) );
@@ -298,8 +298,8 @@ Tomahawk::EchonestControl::updateWidgets()
         combo->addItem( tr( "Longitude" ), QString::number( Echonest::DynamicPlaylist::SortLongitudeAscending ) );
         combo->addItem( tr( "Mode" ), QString::number( Echonest::DynamicPlaylist::SortModeAscending ) );
         combo->addItem( tr( "Key" ), QString::number( Echonest::DynamicPlaylist::SortKeyAscending ) );
-        combo->addItem( tr( "Energy" ), QString::number( Echonest::DynamicPlaylist::SortEnergyAscending ) );
-        combo->addItem( tr( "Danceability" ), QString::number( Echonest::DynamicPlaylist::SortDanceabilityAscending ) );
+        //combo->addItem( tr( "Energy" ), QString::number( Echonest::DynamicPlaylist::SortEnergyAscending ) );
+        //combo->addItem( tr( "Danceability" ), QString::number( Echonest::DynamicPlaylist::SortDanceabilityAscending ) );
         
         m_matchString = "Ascending"; // default
         m_matchData = Echonest::DynamicPlaylist::SortTempoAscending;
