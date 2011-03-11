@@ -39,6 +39,10 @@
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "scanmanager.h"
 
+#ifdef Q_OS_WIN32
+#include <qtsparkle/Updater>
+#endif
+
 using namespace Tomahawk;
 
 
@@ -123,11 +127,25 @@ TomahawkWindow::TomahawkWindow( QWidget* parent )
     toolbar->setIconSize( QSize( 32, 32 ) );
     toolbar->setToolButtonStyle( Qt::ToolButtonFollowStyle );
     toolbar->installEventFilter( new WidgetDragFilter( toolbar ) );
-
+    
 #if defined( Q_OS_DARWIN ) && defined( HAVE_SPARKLE )
-      QAction* checkForUpdates = ui->menu_Help->addAction( tr( "Check for updates...") );
-      checkForUpdates->setMenuRole( QAction::ApplicationSpecificRole );
-      connect(checkForUpdates, SIGNAL( triggered( bool ) ), SLOT( checkForUpdates() ) );
+    QAction* checkForUpdates = ui->menu_Help->addAction( tr( "Check for updates...") );
+    checkForUpdates->setMenuRole( QAction::ApplicationSpecificRole );
+    connect(checkForUpdates, SIGNAL( triggered( bool ) ), SLOT( checkForUpdates() ) );
+#elif defined( WIN32 )
+    QUrl updaterUrl;
+    #ifdef DEBUG_BUILD
+        updaterUrl.setUrl( "http://download.tomahawk-player.org/sparklewin-debug" );
+    #else
+        updaterUrl.setUrl( "http://download.tomahawk-player.org/sparklewin" );
+    #endif
+    qtsparkle::Updater* updater = new qtsparkle::Updater( updaterUrl, this );
+    updater->SetNetworkAccessManager( TomahawkUtils::nam() );
+    updater->SetVersion( VERSION );
+    
+    ui->menu_Help->addSeparator();
+    QAction* checkForUpdates = ui->menu_Help->addAction( tr( "Check for updates...") );
+    connect( checkForUpdates, SIGNAL( triggered() ), updater, SLOT( CheckNow() ) );
 #endif
 
     m_backAvailable = toolbar->addAction( QIcon( RESPATH "images/back.png" ), tr( "Back" ), PlaylistManager::instance(), SLOT( historyBack() ) );

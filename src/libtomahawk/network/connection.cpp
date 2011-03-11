@@ -343,6 +343,7 @@ Connection::readyRead()
 void
 Connection::handleReadMsg()
 {
+    qDebug() << Q_FUNC_INFO << outbound() << m_msg->is(Msg::SETUP) << m_msg->payload();
     if( outbound() == false &&
         m_msg->is( Msg::SETUP ) &&
         m_msg->payload() == "ok" )

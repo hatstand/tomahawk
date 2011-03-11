@@ -23,11 +23,11 @@ using namespace Tomahawk;
 
 DynamicModel::DynamicModel( QObject* parent )
     : PlaylistModel( parent )
-    , m_startOnResolved( false )
     , m_onDemandRunning( false )
     , m_changeOnNext( false )
     , m_searchingForNext( false )
     , m_filterUnresolvable( true )
+    , m_startingAfterFailed( false )
     , m_currentAttempts( 0 )
     , m_lastResolvedRow( 0 )
 {
@@ -69,9 +69,6 @@ DynamicModel::startOnDemand()
     m_playlist->generator()->startOnDemand();
     
     m_onDemandRunning = true;
-    m_startOnResolved = false; // not anymore---user clicks a track to start it
-    m_currentAttempts = 0;
-    m_lastResolvedRow = rowCount( QModelIndex() );
 }
 
 void 
@@ -113,10 +110,6 @@ DynamicModel::trackResolved( bool resolved )
     
     Query* q = qobject_cast<Query*>(sender());
     qDebug() << "Got successful resolved track:" << q->track() << q->artist() << m_lastResolvedRow << m_currentAttempts;
-    if( m_startOnResolved ) { // on first start
-        m_startOnResolved = false;
-        AudioEngine::instance()->play();
-    }
     
     if( m_currentAttempts > 0 ) {
         qDebug() << "EMITTING AN ASK FOR COLLAPSE:" << m_lastResolvedRow << m_currentAttempts;
@@ -135,10 +128,13 @@ DynamicModel::trackResolveFinished( bool success )
         Query* q = qobject_cast<Query*>(sender());
         qDebug() << "Got not resolved track:" << q->track() << q->artist() << m_lastResolvedRow << m_currentAttempts;
         m_currentAttempts++;
-        if( m_currentAttempts < 20 ) {
+        
+        int curAttempts = m_startingAfterFailed ? m_currentAttempts - 20 : m_currentAttempts; // if we just failed, m_currentAttempts includes those failures
+        if( curAttempts < 20 ) {
             qDebug() << "FETCHING MORE!";
             m_playlist->generator()->fetchNext();
         } else {
+            m_startingAfterFailed = true;
             emit trackGenerationFailure( tr( "Could not find a playable track.\n\nPlease change the filters or try again." ) );
         }
     }
@@ -164,11 +160,15 @@ DynamicModel::newTrackLoading()
 void 
 DynamicModel::tracksGenerated( const QList< query_ptr > entries, int limitResolvedTo )
 {
-    if( m_filterUnresolvable ) { // wait till we get them resolved
+    if( m_filterUnresolvable && m_playlist->mode() == OnDemand ) { // wait till we get them resolved (for previewing stations)
         m_limitResolvedTo = limitResolvedTo;
         filterUnresolved( entries );
     } else {
         addToPlaylist( entries, m_playlist->mode() == OnDemand ); // if ondemand, we're previewing, so clear old
+        
+        if( m_playlist->mode() == OnDemand ) {
+            m_lastResolvedRow = rowCount( QModelIndex() );
+        }
     }
 }
 
@@ -212,6 +212,10 @@ DynamicModel::filteringTrackResolved( bool successful )
         addToPlaylist( m_resolvedList, true );
         m_toResolveList.clear();
         m_resolvedList.clear();
+        
+        if( m_playlist->mode() == OnDemand ) {
+            m_lastResolvedRow = rowCount( QModelIndex() );
+        }
     }       
 }
 
